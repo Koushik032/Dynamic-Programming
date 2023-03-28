@@ -1,0 +1,65 @@
+///   ***   ---   ||         In the name of VOGOBAN        |||   ---   ***   ///
+
+
+#include<bits/stdc++.h>
+using namespace std;
+
+
+typedef long long ll;
+typedef vector<int> vi;
+typedef vector<ll> vl;
+typedef pair<int,int> pii;
+
+#define endl '\n'
+#define PB push_back
+#define F first
+#define S second
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),(a).rend()
+
+#define MOD 1000000007
+
+#define mem(a,b) memset(a, b, sizeof(a) )
+#define sqr(a) ((a) * (a))
+
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+
+ll gcd ( ll a, ll b ) { return __gcd ( a, b ); }
+ll lcm ( ll a, ll b ) { return a * ( b / gcd ( a, b ) ); }
+
+const int N = 1e4 + 123;
+
+int dp[N];
+
+int func( int amount, vector<int>& coins )
+{
+    if ( amount == 0 )return 0;
+    if ( dp[amount] != -1)return dp[amount];
+
+    int ans = INT_MAX;
+    for ( int coin : coins )
+    {
+        if ( amount - coin >= 0 )
+        {
+            ans = min( ans + 0ll , func( amount - coin, coins) + 1ll);
+        }
+    }
+        return dp[amount] = ans;
+
+}
+int coinchange(vector< int >& coins , int amount )
+{
+    mem(dp, -1);
+    int ans = func(amount, coins);
+    if( ans == INT_MAX )return -1;
+    return ans;
+}
+
+int main()
+{
+        vector<int> coins = {1, 2, 5};
+        cout<< coinchange(coins, 11);
+
+    return 0;
+}
