@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int n = s.size();
+        int count = 0;
+        
+        vector<vector<bool>> dp(n, vector<bool>(n, 0));
+        
+        for( int i = 0; i < n; i++ )
+        {
+            for( int j = 0, k = i; k < n; j++, k++ )
+            {
+                if( i == 0 )
+                {
+                    dp[j][k] = true;
+                    count++;
+                }
+                else if( i == 1 )
+                {
+                    if( s[j] == s[k] )
+                    {
+                        dp[j][k] = true;
+                        count++;
+                    }
+                    else
+                    {
+                        dp[j][k] = false;
+                    }
+                }
+                else
+                {
+                    if( s[j] == s[k] && dp[j+1][k-1] == true )
+                    {
+                        dp[j][k] = true;
+                        count++;
+                    }
+                    else
+                        dp[j][k] = false;
+                }
+            }
+        }
+        return count;
+    }
+};
