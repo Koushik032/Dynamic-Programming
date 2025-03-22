@@ -59,6 +59,22 @@ int LIS( int n, vector<int> &v, vector<int> &lis ){
     return len;
 }
 
+int LDS( int n, vector<int> &v, vector<int> &lis ){
+    /// For O(N * Log(N) )
+
+    lis.PB(v[0]);
+    int len = 1;
+    for( int i = 1; i < n; i++ ){
+        if( v[i] < lis.back() ){
+            lis.PB(v[i]);
+            len++;
+        }else{
+            int idx = lower_bound(all(lis), v[i], greater<int>()) - lis.begin();
+            lis[idx] = v[i];
+        }
+    }
+    return len;
+}
 
 void solve(int cs) {
     int n = 23;
