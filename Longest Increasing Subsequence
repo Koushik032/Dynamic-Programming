@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+typedef long long ll;
+typedef vector< int > vi;
+typedef vector<ll> vl;
+typedef pair<long long,long long> pii;
+
+#define endl '\n'
+#define PB push_back
+#define eb emplace_back
+#define F first
+#define S second
+#define all(a) (a).begin(),(a).end()
+#define rall(a) (a).rbegin(),(a).valnd()
+
+#define MOD 1000000003
+
+#define mem(a,b) memset(a, b, sizeof(a) )
+#define sqr(a) ((a) * (a))
+
+#define optimize() ios_base::sync_with_stdio(0);cin.tie(0);cout.tie(0);
+
+ll gcd ( ll a, ll b ){    return __gcd ( a, b );}
+ll lcm ( ll a, ll b ){    return a * ( b / gcd ( a, b ) );}
+
+int LIS( int idx, int prev_idx, int n, vector<int> &v, vector<vector<int>> &dp ){
+    /// For O(N * N)
+
+    if( idx == n )return 0;
+    if( dp[idx][prev_idx + 1] != -1 ){
+        return dp[idx][prev_idx + 1];
+    }
+
+    int len = LIS( idx + 1, prev_idx, n, v, dp);
+
+    if( prev_idx == -1 || v[idx] > v[prev_idx] )
+    {
+        len = max(len, 1 + LIS( idx + 1, idx, n, v, dp));
+    }
+
+    return dp[idx][prev_idx + 1] = len;
+}
+
+int LIS( int n, vector<int> &v, vector<int> &lis ){
+    /// For O(N * Log(N) )
+
+    lis.PB(v[0]);
+    int len = 1;
+    for( int i = 1; i < n; i++ ){
+        if( v[i] > lis.back() ){
+            lis.PB(v[i]);
+            len++;
+        }else{
+            int idx = lower_bound(all(lis), v[i]) - lis.begin();
+            lis[idx] = v[i];
+        }
+    }
+    return len;
+}
+
+
+void solve(int cs) {
+    int n = 23;
+
+    vi v = {1, 2, 3, 6, 5, 4, 3, 2, 1, 10, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 11};
+
+    /// LIS in O(n * n) Complexity
+    vector<vector<int>> dp(n, vector<int>(n + 1, -1));
+    int mx_len = LIS(0, -1, n, v, dp);
+
+    /// LIS in O(N* Log(N)) Complexity
+    vector<int> lis;
+    int len = LIS(n, v, lis);
+    cout << len << endl;
+
+}
+int main() {
+
+    int t = 1, cs = 1;
+    //cin >> t;
+
+    while( t-- )
+    {
+        solve( cs++ );
+    }
+    return 0;
+}
